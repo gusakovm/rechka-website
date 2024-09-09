@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=320, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <title>Rechka</title>
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
+        
+        html, body, div, span, applet, object, iframe,
+        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+        a, abbr, acronym, address, big, cite, code,
+        del, dfn, em, img, ins, kbd, q, s, samp,
+        small, strike, strong, sub, sup, tt, var,
+        b, u, i, center,
+        dl, dt, dd, ol, ul, li,
+        fieldset, form, label, legend,
+        table, caption, tbody, tfoot, thead, tr, th, td,
+        article, aside, canvas, details, embed, 
+        figure, figcaption, footer, header, hgroup, 
+        menu, nav, output, ruby, section, summary,
+        time, mark, audio, video {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+        }
+
+        /* My CSS Styles */
+        body {
+            font-family: 'Poiret One', cursive;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(180deg, #DADADA 0%, #FFF 16.15%, #FFF 100%);
+        }
+
+        .rootBox {
+            z-index: 999;
+            width: 100vw;
+            min-height: 100vh;
+            display: block;
+            content: '';
+            box-sizing: border-box;
+            padding: 9vh 16px 1vh 16px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .rootBox__in {
+            margin: 0 auto;
+            display: block;
+            text-align: center;
+        }
+        .rootBox__head {
+            width: 100%;
+            display: block;
+            margin-bottom: 44px;
+            max-width: 540px;
+            margin: 0 auto 44px auto;
+        }
+        .rootBox_logo {
+            font-size: 24px;
+            display: block;
+            padding: 0 0 12px 0;
+        }
+        .rootBox__tgButton {
+            width: 100%;
+            max-width: 392px;
+            display: block;
+            margin: 0 auto;
+            max-width: 540px;
+            margin: 0 auto;
+        }
+        .rootBox_go {
+            font-size: 22px;
+            text-align: center;
+            text-decoration: none;
+            color: #000;
+            text-transform: lowercase;
+            display: inline-block;
+            padding-top: 32px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        .rootBox_go:hover {
+            opacity: 1;
+        }
+
+        .rootBox_bottom {
+            left: 0;
+            width: 100%;
+            font-size: 12px;
+            text-align: center;
+        }
+        .rootBox_bottom * {
+            text-decoration: none !important;
+            color: #000 !important;
+            text-transform: lowercase;
+        }
+        .rootBox_content {
+            margin: 64px auto 0 auto;
+            text-align: left;
+            max-width: 800px;
+        }
+
+        .policy-content {
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .policy-content h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .policy-content h2 {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        
+        .policy-content p {
+            margin-bottom: 15px;
+        }
+        
+        .policy-content ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .policy-content li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="rootBox">
+        <div class="rootBox_head">
+            <div class="rootBox_logo"><img style="border-radius: 50%; position:relative; top:3px; margin-right: 8px;" width="24" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAOESURBVHgB7Zo/aFNBHMd/SRvzR40Q6JRChOCQLioUCoLpUqEFp8ZNqRk7denQwQqCg3/GDlqdIggutkMEdehSt+LkkjqIWEhcWlBjkiZN2vh+hy82Ne397nLv5b2894FASN4vufve73f3u/udJx6PN8HBeMHhuAKAw3EFAIfjCgAOZxBMIHy6CROjNRiJ7UN0aB8SsQaEQ/j5QeuZ/LYXCtsDsLk1yF4bOR/7zGg8RiVC2On05C6MjdTZS4acJsSLd0FDxVAugN7x9FS1bYS7ZXU9AEsrIeVCKBVgLlVR3vGjLL0OMSFUoUSA4aEDeDJf1GK8AWaQ1+aKW/fPKfGGrn8hlaxB9sFP0zqPDGsTafbhD7g2ugfdMhCJRO6BJOjyi7fL4D9l/obS7wO4fqXG3m9s+kAWaQGw83M3KtBr9BVGVgSpEEDXs0LndbAtqfEayCAsAE54j2ZLYDXuzJRY20QRFuDl3V+GLnOyhENNthKJIiQAxj3OwFYFVyLR0CQLgO5lpbg/jvTULstGqZAFwNG3AxgKKAIVkgA4+tPjVbALIl5AEkB2N9crRLyAJICIS1mFsQRt0LgCoPsnTMzzVYFeSwkDrgB2c//DUDZLXAHsOPo6lLb3tQBRQtLGFSBq4cyPRyKmQACZDYZVoOxZ+rougPkAD7cyxHugWO5vjfgC2GMP1BE8PebBFeDzN/kDx15TIBybc5/I79g3BLDGyIPbu9wW342sihIB1j76wa5gUZUHYRL0kH5IdrUwyg4ry3kVcwDCKzosLJ/9W6sTCxcj7bCsToEkQOZtsKPi2ICbWkNW1v1srsBGUeLODDuK1yKk0lit7mH1P/1sAMV49ibIRuLr93+jgOHyai0AhZ0BloYe3UeYZbf6IcBEokAuj+MfJM432DUWalkaT2T07bSZdugVxbKHZONx7wo7HFcAMBi8M7Q4UwZRZO1EMfSe4OFLFDgpUS83ydrJ0NUVmZNo74QXkpf22Cry6YuPLV+q7WRRLgDmCo9nS60bG7h2P8+G4OrFOly+0IAJ7az+d8XL1m7ML7q16xZlyyA2HhupH0Ri1rawfKaVkWGS8nS+2HbMrn+Hp7cidhktzcWwoK71J6H2oqTmuunJKmTeB1gjOzUQR3g6Wf2v4oTuTrHDfQlellRFzxIh2WxPNW4mCA7HFQAcjisAOBxXAHA4rgDgcP4AYOLGSnGQ91EAAAAASUVORK5CYII=">Rechka</div>
+        </div>
+        <div class="rootBox_content policy-content">
+            <h1>Правила отказа от услуги</h1>
+
+            <p>Право потребителя на расторжение договора об оказании услуги регламентируется статьей 32 федерального закона «О защите прав потребителей»</p>
+            
+            <ul>
+                <li>Потребитель вправе расторгнуть договор об оказании услуги в любое время, уплатив исполнителю часть цены пропорционально части оказанной услуги до получения извещения о расторжении указанного договора и возместив исполнителю расходы, произведенные им до этого момента в целях исполнения договора, если они не входят в указанную часть цены услуги;</li>
+                
+                <li>Потребитель при обнаружении недостатков оказанной услуги вправе по своему выбору потребовать:
+                    <ul>
+                        <li>безвозмездного устранения недостатков;</li>
+                        <li>соответствующего уменьшения цены;</li>
+                        <li>возмещения понесенных им расходов по устранению недостатков своими силами или третьими лицами;</li>
+                    </ul>
+                </li>
+                
+                <li>Потребитель вправе предъявлять требования, связанные с недостатками оказанной услуги, если они обнаружены в течение гарантийного срока, а при его отсутствии в разумный срок, в пределах двух лет со дня принятия оказанной услуги;</li>
+                
+                <li>Исполнитель отвечает за недостатки услуги, на которую не установлен гарантийный срок, если потребитель докажет, что они возникли до ее принятия им или по причинам, возникшим до этого момента;</li>
+            </ul>
+
+        </div>
+        <div class="rootBox_bottom">
+             <div class="rootBox_bottom_menu">
+                 <a href="/l/policy" class="rootBox_bottom_menu_item" style="margin_right: 12px;">Политика конфид.</a> | <a href="/l/refund" class="rootBox_bottom_menu_item">Правила отказа</a> | <a href="/l/offer" class="rootBox_bottom_menu_item">Оферта</a> | <a href="/l/price" class="rootBox_bottom_menu_item">Стоимость</a>
+             </div>
+         </div>
+    </div>   
+</body>
+</html>
