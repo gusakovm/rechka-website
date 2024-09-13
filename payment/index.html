@@ -120,7 +120,7 @@
             background-color: #f0f0f0;
             text-align: center;
             font-family: 'Poiret One', cursive;
-            transition: background-color 0.3s ease; /* Добавляем плавный переход */
+            transition: background-color 0.3s ease; 
         }
 
         .payment-form__input::placeholder {
@@ -128,8 +128,8 @@
         }
 
         .payment-form__input:focus {
-            background-color: #e8e8e8; /* Немного темнее фон при фокусе */
-            outline: none; /* Убираем стандартный контур фокуса */
+            background-color: #e8e8e8; 
+            outline: none; 
         }
 
         .payment-form__currency {
@@ -143,7 +143,7 @@
         
         .payment-form__submit {
             margin-top: 20px;
-            margin-bottom: 15px; /* Добавляем отступ снизу */
+            margin-bottom: 15px; 
             padding: 16px 32px;
             font-size: 16px;
             border: none;
@@ -161,9 +161,9 @@
         }
 
         .payment-form__note {
-            color: #888; /* Делаем текст серым */
-            font-size: 14px; /* Уменьшаем размер шрифта */
-            margin-top: 15px; /* Добавляем отступ сверху */
+            color: #888; 
+            font-size: 14px; 
+            margin-top: 15px; 
         }
     </style>
 </head>
@@ -174,12 +174,16 @@
             <div class="rootBox__subtitle">Введите сумму и перейдите к оплате</div>
         </div>
         <div class="payment-form">
-            <form id="paymentForm" method="POST" action="#">
-                <div class="payment-form__input-wrapper">
+            <form id="paymentForm" method="POST" action="https://n8n.gusakov.com/webhook/rechka-create-invoice-83235632">
+                <input type="hidden" id="isTest" name="isTest" value="0">
+                <div class="payment-form__input-wrapper"> 
                     <input type="text" id="amount" name="amount" class="payment-form__input" placeholder="Сумма" required>
                     <span class="payment-form__currency">руб.</span>
                 </div>
-                <button type="submit" id="submitBtn" class="payment-form__submit">Оплатить</button>
+                <div class="payment-form__input-wrapper" style="margin-top: 20px;">
+                    <input type="email" id="email" name="email" class="payment-form__input" placeholder="Email" required>
+                </div>
+                <button type="submit" id="submitBtn" class="payment-form__submit" disabled>Оплатить</button>
             </form>
             <div class="payment-form__note">* Оплата производится через сервис Robokassa</div>
         </div>
@@ -187,14 +191,45 @@
 
     <script>
         const amountInput = document.getElementById('amount');
+        const emailInput = document.getElementById('email');
         const submitBtn = document.getElementById('submitBtn');
 
-        amountInput.addEventListener('input', function() {
-            if (this.value.trim() !== '') {
-                submitBtn.classList.add('payment-form__submit--active');
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(String(email).toLowerCase());
+        }
+
+        function validateInteger(value) {
+            const re = /^\d+$/; // Регулярное выражение для проверки целого числа
+            return re.test(value);
+        }
+
+        function checkFields() {
+            const amount = document.getElementById('amount').value;
+            const email = document.getElementById('email').value;
+            const submitButton = document.getElementById('submitBtn');
+            
+            // Проверка заполненности полей, соответствия маске целого числа и валидности email
+            if (amount && validateInteger(amount) && email && validateEmail(email)) {
+                submitButton.disabled = false;
+                submitButton.classList.add('payment-form__submit--active');
             } else {
-                submitBtn.classList.remove('payment-form__submit--active');
+                submitButton.disabled = true;
+                submitButton.classList.remove('payment-form__submit--active');
             }
-        });
+        }
+
+        // Проверка полей при загрузке страницы
+        window.onload = checkFields;
+
+        // Добавление обработчиков событий для полей
+        document.getElementById('amount').addEventListener('input', checkFields);
+        document.getElementById('email').addEventListener('input', checkFields);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('isTest') === '1') {
+            document.getElementById('isTest').value = '1'; // Установка значения 1, если параметр isTest=1
+        }
     </script>
 </body></html>
+
