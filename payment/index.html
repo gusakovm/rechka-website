@@ -181,7 +181,10 @@
                     <span class="payment-form__currency">руб.</span>
                 </div>
                 <div class="payment-form__input-wrapper" style="margin-top: 20px;">
-                    <input type="email" id="email" name="email" class="payment-form__input" placeholder="Email" required>
+                    <input type="text" id="name" name="name" class="payment-form__input" placeholder="Имя и Фамилия" required>
+                </div>
+                <div class="payment-form__input-wrapper" style="margin-top: 20px;">
+                    <input type="email" id="email" name="email" class="payment-form__input" placeholder="Эл. почта" required>
                 </div>
                 <button type="submit" id="submitBtn" class="payment-form__submit" disabled>Оплатить</button>
             </form>
@@ -193,6 +196,7 @@
         const amountInput = document.getElementById('amount');
         const emailInput = document.getElementById('email');
         const submitBtn = document.getElementById('submitBtn');
+        const nameInput = document.getElementById('name');
 
         function validateEmail(email) {
             const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -206,11 +210,12 @@
 
         function checkFields() {
             const amount = document.getElementById('amount').value;
+            const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const submitButton = document.getElementById('submitBtn');
             
             // Проверка заполненности полей, соответствия маске целого числа и валидности email
-            if (amount && validateInteger(amount) && email && validateEmail(email)) {
+            if (amount && validateInteger(amount) && name.trim() && email && validateEmail(email)) {
                 submitButton.disabled = false;
                 submitButton.classList.add('payment-form__submit--active');
             } else {
@@ -224,6 +229,7 @@
 
         // Добавление обработчиков событий для полей
         document.getElementById('amount').addEventListener('input', checkFields);
+        document.getElementById('name').addEventListener('input', checkFields);
         document.getElementById('email').addEventListener('input', checkFields);
 
         const urlParams = new URLSearchParams(window.location.search);
