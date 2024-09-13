@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
-    <meta name="viewport" content="width=320, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="apple-touch-icon" sizes="180x180" href="https://rechka.com/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="https://rechka.com/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="https://rechka.com/favicon-16x16.png">
@@ -47,9 +47,10 @@
             display: block;
             content: '';
             box-sizing: border-box;
-            padding: 4vh 2px 1vh 2px;
+            padding: 4vh 10px 1vh 10px;
             margin: 0 auto;
             text-align: center;
+            max-width: 100%;
         }
         .rootBox__in {
             margin: 0 auto;
@@ -102,7 +103,10 @@
         }
 
         .payment-form {
-            max-width: 300px;
+            max-width: 100%;
+            width: 300px;
+            padding: 0 10px;
+            box-sizing: border-box;
             margin: 0 auto;
             position: relative;
         }
@@ -121,6 +125,7 @@
             text-align: center;
             font-family: 'Poiret One', cursive;
             transition: background-color 0.3s ease; 
+            box-sizing: border-box;
         }
 
         .payment-form__input::placeholder {
@@ -164,6 +169,21 @@
             color: #888; 
             font-size: 14px; 
             margin-top: 15px; 
+        }
+
+        @media (max-width: 380px) {
+            body {
+                font-size: 14px;
+            }
+            .rootBox__logo {
+                font-size: 20px;
+            }
+            .rootBox__subtitle {
+                font-size: 14px;
+            }
+            .payment-form__input {
+                font-size: 18px;
+            }
         }
     </style>
 </head>
