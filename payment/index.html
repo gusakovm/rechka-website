@@ -193,6 +193,12 @@
     </div>   
 
     <script>
+        // Добавьте эту функцию в начало скрипта
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name.toLowerCase()) || urlParams.get(name.toUpperCase()) || urlParams.get(name);
+        }
+
         const amountInput = document.getElementById('amount');
         const emailInput = document.getElementById('email');
         const submitBtn = document.getElementById('submitBtn');
@@ -224,18 +230,26 @@
             }
         }
 
-        // Проверка полей при загрузке страницы
-        window.onload = checkFields;
+        // Измените функцию window.onload следующим образом
+        window.onload = function() {
+            const amountParam = getUrlParameter('amount');
+            if (amountParam && validateInteger(amountParam)) {
+                document.getElementById('amount').value = amountParam;
+            }
+            
+            const isTestParam = getUrlParameter('isTest');
+            if (isTestParam === '1') {
+                document.getElementById('isTest').value = '1';
+            }
 
-        // Добавление обработчиков событий для полей
-        document.getElementById('amount').addEventListener('input', checkFields);
-        document.getElementById('name').addEventListener('input', checkFields);
-        document.getElementById('email').addEventListener('input', checkFields);
+            checkFields();
 
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('isTest') === '1') {
-            document.getElementById('isTest').value = '1'; // Установка значения 1, если параметр isTest=1
-        }
+            // Добавление обработчиков событий для полей
+            document.getElementById('amount').addEventListener('input', checkFields);
+            document.getElementById('name').addEventListener('input', checkFields);
+            document.getElementById('email').addEventListener('input', checkFields);
+        };
+
     </script>
 </body></html>
 
