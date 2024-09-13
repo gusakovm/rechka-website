@@ -222,12 +222,12 @@
                 </div>
                 <button type="submit" id="submitBtn" class="payment-form__submit" disabled>Оплатить</button>
             </form>
-            <div class="payment-form__note">* Оплата производится через сервис Robokassa</div>
+            <div class="payment-form__note">* Оплата производится через сервис Robokassa: российскими и иностранными картами</div>
+            <div class="payment-form__note">** Не работает оплата с карт США, Канады, Кореи, Турции, Азейрбайджана, Беларуси и Украины</div>
         </div>
     </div>   
 
     <script>
-        // Добавьте эту функцию в начало скрипта
         function getUrlParameter(name) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(name.toLowerCase()) || urlParams.get(name.toUpperCase()) || urlParams.get(name);
@@ -244,7 +244,7 @@
         }
 
         function validateInteger(value) {
-            const re = /^\d+$/; // Регулярное выражение для проверки целого числа
+            const re = /^\d+$/;
             return re.test(value);
         }
 
@@ -254,7 +254,6 @@
             const email = document.getElementById('email').value;
             const submitButton = document.getElementById('submitBtn');
             
-            // Проверка заполненности полей, соответствия маске целого числа и валидности email
             if (amount && validateInteger(amount) && name.trim() && email && validateEmail(email)) {
                 submitButton.disabled = false;
                 submitButton.classList.add('payment-form__submit--active');
@@ -264,7 +263,6 @@
             }
         }
 
-        // Измените функцию window.onload следующим образом
         window.onload = function() {
             const amountParam = getUrlParameter('amount');
             if (amountParam && validateInteger(amountParam)) {
@@ -278,7 +276,6 @@
 
             checkFields();
 
-            // Добавление обработчиков событий для полей
             document.getElementById('amount').addEventListener('input', checkFields);
             document.getElementById('name').addEventListener('input', checkFields);
             document.getElementById('email').addEventListener('input', checkFields);
