@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=320, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://rechka.com/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://rechka.com/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://rechka.com/favicon-16x16.png">
+    <title>Rechka - Ошибка оплаты</title>
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
+        
+        html, body, div, span, applet, object, iframe,
+        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+        a, abbr, acronym, address, big, cite, code,
+        del, dfn, em, img, ins, kbd, q, s, samp,
+        small, strike, strong, sub, sup, tt, var,
+        b, u, i, center,
+        dl, dt, dd, ol, ul, li,
+        fieldset, form, label, legend,
+        table, caption, tbody, tfoot, thead, tr, th, td,
+        article, aside, canvas, details, embed, 
+        figure, figcaption, footer, header, hgroup, 
+        menu, nav, output, ruby, section, summary,
+        time, mark, audio, video {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+        }
+
+        /* My CSS Styles */
+        body {
+            font-family: 'Poiret One', cursive;
+            margin: 0;
+            padding: 0;
+            background-color: #FFF;
+            background: linear-gradient(180deg, #DADADA 0%, #FFF 60px, #FFF 100%);
+        }
+
+        .rootBox {
+            z-index: 999;
+            width: 100vw;
+            min-height: 100vh;
+            display: block;
+            content: '';
+            box-sizing: border-box;
+            padding: 4vh 2px 1vh 2px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .rootBox__in {
+            margin: 0 auto;
+            display: block;
+            text-align: center;
+        }
+        .rootBox__head {
+            width: 100%;
+            display: block;
+            margin-bottom: 44px;
+            max-width: 540px;
+            margin: 0 auto 44px auto;
+        }
+        .rootBox__logo {
+            font-size: 24px;
+            display: block;
+            padding: 0 0 12px 0;
+        }
+        .rootBox__subtitle {
+            font-size: 16px;
+        }
+        .rootBox_menu {
+            display: block;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .rootBox_menu_item {
+            padding: 0 4px;
+            text-decoration: none;
+            color: #000 !important;
+        }
+        .rootBox_go {
+            font-size: 22px;
+            text-align: center;
+            text-decoration: none;
+            color: #000;
+            text-transform: lowercase;
+            display: inline-block;
+            padding-top: 32px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        .rootBox_go:hover {
+            opacity: 1;
+        }
+        .calendar {
+            position: relative;
+            width: 100%;
+            height: 600px;
+        }
+
+        .success-message {
+            max-width: 300px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .success-message p {
+            margin-bottom: 10px;
+        }
+
+
+        .retry-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="rootBox">
+        <div class="rootBox__head">
+                <div class="rootBox__logo"><img style="border-radius: 50%; position:relative; top:3px; margin-right: 8px;" width="24" width="24" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAOESURBVHgB7Zo/aFNBHMd/SRvzR40Q6JRChOCQLioUCoLpUqEFp8ZNqRk7denQwQqCg3/GDlqdIggutkMEdehSt+LkkjqIWEhcWlBjkiZN2vh+hy82Ne397nLv5b2894FASN4vufve73f3u/udJx6PN8HBeMHhuAKAw3EFAIfjCgAOZxBMIHy6CROjNRiJ7UN0aB8SsQaEQ/j5QeuZ/LYXCtsDsLk1yF4bOR/7zGg8RiVC2On05C6MjdTZS4acJsSLd0FDxVAugN7x9FS1bYS7ZXU9AEsrIeVCKBVgLlVR3vGjLL0OMSFUoUSA4aEDeDJf1GK8AWaQ1+aKW/fPKfGGrn8hlaxB9sFP0zqPDGsTafbhD7g2ugfdMhCJRO6BJOjyi7fL4D9l/obS7wO4fqXG3m9s+kAWaQGw83M3KtBr9BVGVgSpEEDXs0LndbAtqfEayCAsAE54j2ZLYDXuzJRY20QRFuDl3V+GLnOyhENNthKJIiQAxj3OwFYFVyLR0CQLgO5lpbg/jvTULstGqZAFwNG3AxgKKAIVkgA4+tPjVbALIl5AEkB2N9crRLyAJICIS1mFsQRt0LgCoPsnTMzzVYFeSwkDrgB2c//DUDZLXAHsOPo6lLb3tQBRQtLGFSBq4cyPRyKmQACZDYZVoOxZ+rougPkAD7cyxHugWO5vjfgC2GMP1BE8PebBFeDzN/kDx15TIBybc5/I79g3BLDGyIPbu9wW342sihIB1j76wa5gUZUHYRL0kH5IdrUwyg4ry3kVcwDCKzosLJ/9W6sTCxcj7bCsToEkQOZtsKPi2ICbWkNW1v1srsBGUeLODDuK1yKk0lit7mH1P/1sAMV49ibIRuLr93+jgOHyai0AhZ0BloYe3UeYZbf6IcBEokAuj+MfJM432DUWalkaT2T07bSZdugVxbKHZONx7wo7HFcAMBi8M7Q4UwZRZO1EMfSe4OFLFDgpUS83ydrJ0NUVmZNo74QXkpf22Cry6YuPLV+q7WRRLgDmCo9nS60bG7h2P8+G4OrFOly+0IAJ7az+d8XL1m7ML7q16xZlyyA2HhupH0Ri1rawfKaVkWGS8nS+2HbMrn+Hp7cidhktzcWwoK71J6H2oqTmuunJKmTeB1gjOzUQR3g6Wf2v4oTuTrHDfQlellRFzxIh2WxPNW4mCA7HFQAcjisAOBxXAHA4rgDgcP4AYOLGSnGQ91EAAAAASUVORK5CYII=" />Rechka ОПЛАТА</div>
+            <div class="rootBox__subtitle">Оплата успешна!</div>
+        </div>
+        <div class="success-message">
+            <p>Поздравляем! Ваш платеж был успешно обработан.</p>
+        </div>
+    </div>   
+
+</body></html>
