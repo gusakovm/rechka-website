@@ -10,6 +10,10 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="preload" as="image" href="https://storage.yandexcloud.net/893264981267387356145745696564/p/oxzwnekycwfdxbfiovoroileibpb.png">
+    <link rel="preload" as="image" href="https://storage.yandexcloud.net/893264981267387356145745696564/p/ojqwlrffwfclouftfvlzhesjbhyz.svg">
+    <link rel="preload" as="image" href="https://storage.yandexcloud.net/893264981267387356145745696564/p/bhhixeuvucukrtymfaheevqeykzs.png">
+    <link rel="preload" as="image" href="https://storage.yandexcloud.net/893264981267387356145745696564/p/axrulkizppxhmlcitjlafdtaanbz.png">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Tenor+Sans&display=swap');
 
@@ -488,9 +492,294 @@
             }
         }
 
+        /* ===== Intro Screen Styles ===== */
+        .intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 101;
+            display: flex;
+            flex-direction: column;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .intro-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .intro-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .intro-content {
+            position: relative;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            background: white;
+            overflow: hidden;
+        }
+
+        .intro-content-inner {
+            position: relative;
+            width: 100%;
+            max-width: 640px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 80px 40px;
+            background: #933030;
+        }
+
+        .intro-content-inner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://storage.yandexcloud.net/893264981267387356145745696564/p/oxzwnekycwfdxbfiovoroileibpb.png');
+            background-size: 686px auto;
+            background-repeat: repeat;
+            opacity: 0.336;
+            mix-blend-mode: screen;
+            pointer-events: none;
+        }
+
+        .intro-text-wrapper {
+            position: relative;
+            z-index: 1;
+            text-align: left;
+            max-width: 400px;
+            margin-bottom: 60px;
+        }
+
+        .intro-subtitle {
+            font-size: 20px;
+            line-height: 23px;
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .intro-title {
+            font-size: clamp(32px, 7vw, 40px);
+            line-height: 1.286;
+            color: #ffcc85;
+            margin-bottom: 16px;
+            text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        .intro-caption {
+            font-size: 20px;
+            line-height: 23px;
+            color: white;
+            padding-top: 12px;
+        }
+
+        .intro-button {
+            position: relative;
+            z-index: 1;
+            background: white;
+            border: none;
+            border-radius: 55px;
+            width: 193px;
+            height: 57px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .intro-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .intro-button:active {
+            transform: translateY(0);
+        }
+
+        .intro-button img {
+            width: 37px;
+            height: auto;
+        }
+
+        .intro-button span {
+            font-size: 28px;
+            line-height: 1;
+            color: #242424;
+        }
+
+        .intro-footer {
+            background: white;
+            min-height: 148px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .intro-footer-inner {
+            width: 100%;
+            max-width: 640px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 0 16px;
+        }
+
+        .intro-logos {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .intro-logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .intro-attribution {
+            font-size: 12px;
+            line-height: 14px;
+            color: #242424;
+            text-align: left;
+            max-width: 440px;
+        }
+
+        @media (max-width: 768px) {
+            .intro-content {
+                padding: 0;
+            }
+
+            .intro-content-inner {
+                padding: 60px 32px;
+                border-left: none;
+                border-right: none;
+            }
+
+            .intro-text-wrapper {
+                max-width: 100%;
+            }
+
+            .intro-title {
+                font-size: clamp(22px, 6vw, 26px);
+            }
+
+            .intro-subtitle,
+            .intro-caption {
+                font-size: 18px;
+                line-height: 21px;
+            }
+
+            .intro-button {
+                width: 173px;
+                height: 52px;
+            }
+
+            .intro-button span {
+                font-size: 24px;
+            }
+
+            .intro-footer {
+                min-height: 140px;
+                padding: 16px;
+            }
+
+            .intro-logo {
+                height: 32px;
+            }
+
+            .intro-attribution {
+                font-size: 11px;
+                line-height: 13px;
+            }
+        }
+
     </style>
 </head>
 <body>
+    <!-- Intro Screen Overlay -->
+    <div class="intro-overlay" id="intro-overlay">
+        <div class="intro-container">
+            <div class="intro-content">
+                <div class="intro-content-inner">
+                    <div class="intro-text-wrapper">
+                        <p class="intro-subtitle">Ашвагхоша</p>
+                        <h1 class="intro-title">Пятьдесят строф<br>благочестивого<br>почитания учителя<br>(Гурупаньчашика)</h1>
+                        <p class="intro-caption">С комментариями Павла Баранова</p>
+                    </div>
+                    <button class="intro-button" id="intro-button">
+                        <img src="https://storage.yandexcloud.net/893264981267387356145745696564/p/ojqwlrffwfclouftfvlzhesjbhyz.svg" alt="Читать">
+                        <span>Читать</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="intro-footer">
+                <div class="intro-footer-inner">
+                    <div class="intro-logos">
+                        <img src="https://storage.yandexcloud.net/893264981267387356145745696564/p/bhhixeuvucukrtymfaheevqeykzs.png" alt="WDP" class="intro-logo">
+                        <img src="https://storage.yandexcloud.net/893264981267387356145745696564/p/axrulkizppxhmlcitjlafdtaanbz.png" alt="Rechka" class="intro-logo">
+                    </div>
+                    <p class="intro-attribution">Цифровая версия «Гурупаньчашика» с комментарияим подготовлена совместно Павлом Барановым и Максимом Гусаковым исключительно для сообщества «У Дао пай» и Rechka</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // ===== Intro Screen Logic =====
+    (function() {
+        const introOverlay = document.getElementById('intro-overlay');
+        const introButton = document.getElementById('intro-button');
+
+        // Блокируем скролл body пока интро активно
+        document.body.style.overflow = 'hidden';
+
+        // Функция закрытия интро
+        function dismissIntro() {
+            introOverlay.classList.add('hidden');
+
+            // Восстанавливаем скролл и удаляем overlay из DOM после анимации
+            setTimeout(() => {
+                document.body.style.overflow = '';
+                introOverlay.remove();
+            }, 500); // Совпадает с transition duration
+        }
+
+        // Обработчик клика на кнопку
+        introButton.addEventListener('click', dismissIntro);
+
+        // Опционально: закрытие по ESC
+        document.addEventListener('keydown', function handleEscape(e) {
+            if (e.key === 'Escape' && !introOverlay.classList.contains('hidden')) {
+                dismissIntro();
+                document.removeEventListener('keydown', handleEscape);
+            }
+        });
+    })();
+    </script>
+
     <div class="header" id="header">
         <p class="header-text">Пятьдесят строф благочестивого почитания учителя (Гурупаньчашика)</p>
     </div>
