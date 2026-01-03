@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гурупанчашика - Пятьдесят строф благочестивого почитания учителя</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="googlebot" content="noindex, nofollow">
+    <meta name="yandex" content="noindex, nofollow">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tenor+Sans&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: white;
+            font-family: 'Tenor Sans', sans-serif;
+            font-size: 16px;
+            line-height: 24px;
+            color: #000;
+        }
+
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+            border-left: 1px solid black;
+            border-right: 1px solid black;
+            background: white;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 640px;
+            max-width: 100%;
+            height: 40px;
+            background: #242424;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 20;
+            transition: transform 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .header.hidden {
+            transform: translateX(-50%) translateY(-100%);
+        }
+
+        .header-text {
+            font-family: 'Tenor Sans', sans-serif;
+            font-size: 16px;
+            line-height: 16px;
+            color: white;
+            margin: 0;
+        }
+
+        .filter-bar {
+            position: fixed;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 640px;
+            max-width: 100%;
+            height: 40px;
+            background: #E5E5E5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 19;
+            transition: top 0.3s ease;
+            box-sizing: border-box;
+            border-right: 1px solid #242424;
+            box-sizing: border-box;
+            border-left: 1px solid #242424;
+        }
+
+        .filter-bar.top {
+            top: 0;
+        }
+
+        .filter-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-label {
+            font-family: 'Tenor Sans', sans-serif;
+            font-size: 12px;
+            line-height: 24px;
+            color: black;
+            margin: 0;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 37px;
+            height: 22px;
+            background: #e5e5e5;
+            border: 1px solid #242424;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: #242424;
+        }
+
+        .toggle-knob {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background: #242424;
+            border-radius: 16px;
+            transition: left 0.3s ease, background 0.3s ease;
+        }
+
+        .toggle-switch.active .toggle-knob {
+            left: 17px;
+            background: white;
+        }
+
+        .content {
+            padding: 12px 32px 32px 32px;
+            padding-bottom: 80px;
+            width: 100%;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 640px;
+            height: 48px;
+            background: #242424;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 10;
+            box-sizing: border-box;
+        }
+
+        .footer-text {
+            font-family: 'Tenor Sans', sans-serif;
+            font-size: 10px;
+            line-height: 10px;
+            color: white;
+            margin: 0;
+        }
+
+        /* Стили для кастомных тегов */
+        h2 {
+            font-size: 22px;
+            margin: 24px 0 13px 0;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        h3 {
+            font-size: 18px;
+            margin: 19px 0 10px 0;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        text {
+            display: block;
+            margin: 0 0;
+            text-align: left;
+            line-height: 24px;
+            margin-bottom: 12px;
+        }
+
+        verse {
+            display: block;
+            margin: 16px 0;
+            padding-left: 32px;
+            font-style: italic;
+        }
+
+        list {
+            display: block;
+            margin: 5px 0 5px 32px;
+        }
+
+        selected {
+            background: rgba(255, 204, 133, 0.54);
+            padding: 2px 0px;
+            line-height: 24px;
+            display: inline;
+            box-decoration-break: clone;
+            -webkit-box-decoration-break: clone;
+            box-shadow: 3px 0px 0px 0px rgba(255, 204, 133, 0.54), -3px 0px 0px 0px rgba(255, 204, 133, 0.54);
+            cursor: pointer;
+        }
+
+        /* Модальное окно */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(36, 36, 36, 0.55);
+            z-index: 100;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 20px;
+            width: 370px;
+            max-width: 100%;
+            padding: 16px;
+            position: relative;
+            margin-bottom: 0;
+        }
+
+        .modal-quote {
+            position: relative;
+            padding-left: 16px;
+            padding-bottom: 4px;
+            margin-bottom: 4px;
+        }
+
+        .modal-quote::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #ffe3bd;
+        }
+
+        .modal-quote-text {
+            font-family: 'Tenor Sans', sans-serif;
+            font-size: 12px;
+            line-height: 16px;
+            color: #242424;
+        }
+
+        .modal-quote-text.collapsed {
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .modal-expand-btn {
+            display: block;
+            background: none;
+            border: none;
+            color: #949494;
+            font-family: 'Tenor Sans', sans-serif;
+            font-size: 12px;
+            cursor: pointer;
+            padding: 2px 0;
+            margin-top: 0px;
+            text-align: left;
+            text-decoration: underline;
+        }
+
+        .modal-expand-btn:hover {
+            color: #242424;
+        }
+
+        .modal-author {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+            margin-bottom: 8px;
+        }
+
+        .modal-author-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .modal-author-info {
+            font-family: 'Tenor Sans', sans-serif;
+            color: #242424;
+        }
+
+        .modal-author-label {
+            font-size: 12px;
+            line-height: 15px;
+        }
+
+        .modal-author-name {
+            font-size: 16px;
+            line-height: 16px;
+        }
+
+        .modal-comment {
+            font-family: 'Tenor Sans', sans-serif;
+            font-size: 16px;
+            line-height: 24px;
+            color: #242424;
+            margin-bottom: 0;
+        }
+
+        .modal-close-btn {
+            background: white;
+            border: none;
+            border-radius: 25px;
+            padding: 11px 39px;
+            font-family: 'Tenor Sans', sans-serif;
+            font-size: 16px;
+            line-height: 24px;
+            color: #242424;
+            cursor: pointer;
+            display: block;
+            margin: 4px auto 0 auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-close-top {
+            position: sticky;
+            top: 4px;
+            align-self: flex-end;
+            width: 40px;
+            height: 40px;
+            margin-right: 0;
+            margin-bottom: 8px;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            flex-shrink: 0;
+        }
+
+        .modal-close-top.visible {
+            display: flex;
+        }
+
+        .modal-close-top::before,
+        .modal-close-top::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 2px;
+            background: #242424;
+        }
+
+        .modal-close-top::before {
+            transform: rotate(45deg);
+        }
+
+        .modal-close-top::after {
+            transform: rotate(-45deg);
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        .modal-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-height: 100%;
+            overflow-y: auto;
+            padding: 4px;
+            box-sizing: border-box;
+            position: relative;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: translateY(0);
+        }
+
+        /* Мобильная версия */
+        @media (max-width: 768px) {
+            .container {
+                max-width: 100%;
+                min-height: 100vh;
+                margin: 0;
+                margin-top: 80px;
+                border: none;
+            }
+
+            .header {
+                top: 0;
+                left: 0;
+                transform: translateX(0);
+                width: 100%;
+            }
+
+            .header.hidden {
+                transform: translateY(-100%);
+            }
+
+            .filter-bar {
+                top: 40px;
+                left: 0;
+                transform: translateX(0);
+                width: 100%;
+            }
+
+            .filter-bar.top {
+                top: 0;
+            }
+
+            .content {
+                padding: 20px;
+                padding-bottom: 68px;
+            }
+
+            .footer {
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                transform: none;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            h3 {
+                font-size: 19px;
+            }
+
+            list {
+                margin-left: 24px;
+            }
+        }
+
+        /* Десктопная версия модального окна */
+        @media (min-width: 769px) {
+            .modal-overlay {
+                align-items: center;
+            }
+
+            .modal {
+                width: 560px;
+            }
+
+            .modal-container {
+                max-width: 560px;
+                transform: scale(0.9);
+                transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            }
+
+            .modal-overlay.active .modal-container {
+                transform: scale(1);
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="header" id="header">
+        <p class="header-text">Пятьдесят строф благочестивого почитания учителя (Гурупаньчашика)</p>
+    </div>
+
+    <div class="filter-bar">
+        <div class="filter-controls">
+            <div class="toggle-switch" id="toggle-switch">
+                <div class="toggle-knob"></div>
+            </div>
+            <p class="filter-label">Только выделенный текст</p>
+        </div>
+    </div>
+
+    <div class="container" id="container">
+        <div class="content" id="book-content">
+            Загрузка...
+        </div>
+    </div>
+
+    <div class="footer">
+        <p class="footer-text">Цифровая версия «Гурупаньчашика» с комментарияим подготовлена совместно Павлом Барановым и Максимом Гусаковым исключительно для сообщества «У Дао пай» и Rechka</p>
+    </div>
+
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-container">
+            <button class="modal-close-top" id="modal-close-top"></button>
+            <div class="modal">
+                <div class="modal-quote">
+                    <p class="modal-quote-text" id="modal-quote-text"></p>
+                </div>
+                <div class="modal-author">
+                    <img class="modal-author-avatar" src="https://storage.yandexcloud.net/893264981267387356145745696564/p/mbabievtgovvixszyhitrtlmcsua.jpeg" alt="Павел Баранов">
+                    <div class="modal-author-info">
+                        <div class="modal-author-label">Комментарий</div>
+                        <div class="modal-author-name">Павла Баранова</div>
+                    </div>
+                </div>
+                <p class="modal-comment" id="modal-comment"></p>
+            </div>
+            <button class="modal-close-btn" id="modal-close-btn">Закрыть</button>
+        </div>
+    </div>
+
+    <script>
+        // Логика скрытия/показа header при скролле, filter-bar прилипает к верху
+        const container = document.getElementById('container');
+        const header = document.getElementById('header');
+        const filterBar = document.querySelector('.filter-bar');
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (scrollTop > 100) {
+                header.classList.add('hidden');
+                filterBar.classList.add('top');
+            } else if (scrollTop < 10) {
+                header.classList.remove('hidden');
+                filterBar.classList.remove('top');
+            }
+        });
+
+        // Логика переключения toggle switch
+        const toggleSwitch = document.getElementById('toggle-switch');
+        const filterLabel = document.querySelector('.filter-label');
+
+        function toggleFilter() {
+            toggleSwitch.classList.toggle('active');
+            const isActive = toggleSwitch.classList.contains('active');
+
+            // Фильтрация контента
+            const bookContent = document.getElementById('book-content');
+            const elements = bookContent.querySelectorAll('text, verse, list, h2, h3');
+
+            elements.forEach(element => {
+                if (isActive) {
+                    // Проверяем, содержит ли элемент selected тег
+                    const hasSelected = element.querySelector('selected') !== null;
+                    if (hasSelected) {
+                        element.style.display = '';
+                    } else {
+                        element.style.display = 'none';
+                    }
+                } else {
+                    // Показываем все элементы
+                    element.style.display = '';
+                }
+            });
+        }
+
+        toggleSwitch.addEventListener('click', toggleFilter);
+        filterLabel.addEventListener('click', toggleFilter);
+
+        // Модальное окно
+        const modalOverlay = document.getElementById('modal-overlay');
+        const modalQuoteText = document.getElementById('modal-quote-text');
+        const modalComment = document.getElementById('modal-comment');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+        const modalCloseTop = document.getElementById('modal-close-top');
+
+        function checkModalHeight() {
+            const modal = document.querySelector('.modal');
+            const modalContainer = document.querySelector('.modal-container');
+
+            // Проверяем, есть ли скролл в контейнере
+            if (modalContainer.scrollHeight > modalContainer.clientHeight) {
+                modalCloseTop.classList.add('visible');
+            } else {
+                modalCloseTop.classList.remove('visible');
+            }
+        }
+
+        function createQuoteBlock(quote, isLast) {
+            const quoteBlock = document.createElement('div');
+            quoteBlock.className = 'modal-quote';
+            if (!isLast) {
+                quoteBlock.style.marginBottom = '12px';
+            }
+
+            const quoteText = document.createElement('p');
+            quoteText.className = 'modal-quote-text';
+
+            // Проверяем длину текста (примерно 400 символов = ~4 строки при font-size: 12px)
+            const isLongText = quote.length > 400;
+
+            if (isLongText) {
+                quoteText.classList.add('collapsed');
+                quoteText.textContent = quote;
+
+                // Создаем кнопку на отдельной строке
+                const expandBtn = document.createElement('button');
+                expandBtn.className = 'modal-expand-btn';
+                expandBtn.textContent = 'Полный текст';
+                expandBtn.setAttribute('aria-label', 'Развернуть текст');
+
+                expandBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isCollapsed = quoteText.classList.contains('collapsed');
+
+                    if (isCollapsed) {
+                        quoteText.classList.remove('collapsed');
+                        expandBtn.style.display = 'none';
+                    } else {
+                        quoteText.classList.add('collapsed');
+                        expandBtn.style.display = 'block';
+                    }
+
+                    // Перепроверяем высоту модального окна
+                    setTimeout(checkModalHeight, 0);
+                });
+
+                quoteBlock.appendChild(quoteText);
+                quoteBlock.appendChild(expandBtn);
+            } else {
+                quoteText.textContent = quote;
+                quoteBlock.appendChild(quoteText);
+            }
+
+            return quoteBlock;
+        }
+
+        function openModal(quotes, commentText) {
+            const modal = document.querySelector('.modal');
+            const modalAuthor = document.querySelector('.modal-author');
+
+            // Удаляем все существующие блоки modal-quote
+            const existingQuotes = modal.querySelectorAll('.modal-quote');
+            existingQuotes.forEach(quote => quote.remove());
+
+            // Если quotes это массив, создаем отдельный блок modal-quote для каждой цитаты
+            if (Array.isArray(quotes)) {
+                quotes.forEach((quote, index) => {
+                    const quoteBlock = createQuoteBlock(quote, index === quotes.length - 1);
+                    modal.insertBefore(quoteBlock, modalAuthor);
+                });
+            } else {
+                // Если это одна цитата, создаем один блок modal-quote
+                const quoteBlock = createQuoteBlock(quotes, true);
+                modal.insertBefore(quoteBlock, modalAuthor);
+            }
+
+            modalComment.textContent = commentText;
+            modalOverlay.classList.add('active');
+            document.body.classList.add('modal-open');
+
+            // Проверяем высоту после отрисовки с небольшой задержкой
+            setTimeout(checkModalHeight, 100);
+
+            // Также проверяем при изменении размера окна
+            const resizeObserver = new ResizeObserver(checkModalHeight);
+            resizeObserver.observe(modal);
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            document.body.classList.remove('modal-open');
+            modalCloseTop.classList.remove('visible');
+        }
+
+        // Закрытие по кнопке
+        modalCloseBtn.addEventListener('click', closeModal);
+
+        // Закрытие по верхней кнопке
+        modalCloseTop.addEventListener('click', closeModal);
+
+        // Закрытие по клику на overlay
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                closeModal();
+            }
+        });
+
+        // Закрытие по Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // Навешиваем обработчики на selected элементы после загрузки контента
+        fetch('book.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('book-content').innerHTML = html;
+
+                // Навешиваем обработчики на все selected элементы
+                const selectedElements = document.querySelectorAll('selected');
+                selectedElements.forEach(element => {
+                    element.addEventListener('click', () => {
+                        const chainId = element.getAttribute('chain-id');
+
+                        let quoteText = '';
+                        let commentText = '';
+
+                        if (chainId) {
+                            // Если есть chain-id, собираем все элементы с тем же chain-id
+                            const chainElements = document.querySelectorAll(`selected[chain-id="${chainId}"]`);
+                            const quotes = [];
+
+                            chainElements.forEach(el => {
+                                quotes.push(el.textContent.trim());
+                                // Берем комментарий из первого элемента цепочки
+                                if (!commentText && el.getAttribute('comment')) {
+                                    commentText = el.getAttribute('comment');
+                                }
+                            });
+
+                            // Передаем массив цитат
+                            openModal(quotes, commentText);
+                        } else {
+                            // Если нет chain-id, берем текст одного элемента
+                            quoteText = element.textContent.trim();
+                            commentText = element.getAttribute('comment') || '(комментарий отсутствует)';
+                            openModal(quoteText, commentText);
+                        }
+                    });
+                });
+            })
+            .catch(error => {
+                console.error('Ошибка загрузки:', error);
+                document.getElementById('book-content').innerHTML =
+                    '<p style="color: red; text-align: center;">Ошибка загрузки содержимого</p>';
+            });
+    </script>
+</body>
+</html>

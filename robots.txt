@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /gurupanchashika/
+
+User-agent: Yandex
+Disallow: /gurupanchashika/
+
+User-agent: Googlebot
+Disallow: /gurupanchashika/
