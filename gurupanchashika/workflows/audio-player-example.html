@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пример аудио-плеера</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .audio-player {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        audio {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .player-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        .note {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Пример использования аудио-плеера</h1>
+
+    <p>После конвертации аудио файлов используйте следующий код для вставки в вашу страницу:</p>
+
+    <div class="audio-player">
+        <div class="player-title">Базовый плеер (только MP3)</div>
+        <audio controls>
+            <source src="../audio-mp3/example.mp3" type="audio/mpeg">
+            Ваш браузер не поддерживает воспроизведение аудио.
+        </audio>
+    </div>
+
+    <h3>HTML код:</h3>
+    <pre><code>&lt;audio controls&gt;
+    &lt;source src="audio-mp3/example.mp3" type="audio/mpeg"&gt;
+    Ваш браузер не поддерживает воспроизведение аудио.
+&lt;/audio&gt;</code></pre>
+
+    <div class="note">
+        <strong>📌 Примечание:</strong> MP3 формат поддерживается всеми современными браузерами:
+        Chrome, Safari, Firefox, Edge. Для совместимости достаточно только MP3.
+    </div>
+
+    <h2>Расширенный вариант (с запасным форматом)</h2>
+
+    <p>Если вы хотите сохранить OGG файлы для браузеров, которые лучше его поддерживают:</p>
+
+    <div class="audio-player">
+        <div class="player-title">Плеер с несколькими форматами</div>
+        <audio controls>
+            <source src="../audio-source/example.ogg" type="audio/ogg">
+            <source src="../audio-mp3/example.mp3" type="audio/mpeg">
+            Ваш браузер не поддерживает воспроизведение аудио.
+        </audio>
+    </div>
+
+    <h3>HTML код:</h3>
+    <pre><code>&lt;audio controls&gt;
+    &lt;source src="audio-source/example.ogg" type="audio/ogg"&gt;
+    &lt;source src="audio-mp3/example.mp3" type="audio/mpeg"&gt;
+    Ваш браузер не поддерживает воспроизведение аудио.
+&lt;/audio&gt;</code></pre>
+
+    <div class="note">
+        <strong>💡 Как это работает:</strong> Браузер выбирает первый поддерживаемый формат.
+        Chrome и Firefox возьмут OGG, Safari возьмет MP3.
+    </div>
+
+    <h2>Структура директорий</h2>
+    <pre><code>gurupanchashika/
+├── audio-source/       # Исходные OGG файлы
+│   └── example.ogg
+├── audio-mp3/          # Конвертированные MP3 файлы
+│   └── example.mp3
+├── workflows/          # Скрипты для конвертации и dev-сервера
+│   ├── convert-audio.sh
+│   └── start-server.sh
+├── book.html           # Ваша основная страница
+└── index.html</code></pre>
+
+</body>
+</html>

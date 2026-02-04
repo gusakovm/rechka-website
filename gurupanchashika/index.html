@@ -854,6 +854,11 @@
             const elements = bookContent.querySelectorAll('text, verse, list, h2, h3');
 
             elements.forEach(element => {
+                // Пропускаем элементы из intro-section
+                if (element.closest('.intro-section')) {
+                    return;
+                }
+
                 if (isActive) {
                     // Проверяем, содержит ли элемент selected тег
                     const hasSelected = element.querySelector('selected') !== null;
@@ -998,11 +1003,62 @@
             }
         });
 
-        // Навешиваем обработчики на selected элементы после загрузки контента
-        fetch('book.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('book-content').innerHTML = html;
+        // Загружаем контент: сначала intro-section, потом book.html
+        Promise.all([
+            fetch('intro-section.html').then(r => r.text()),
+            fetch('book.html').then(r => r.text())
+        ])
+            .then(([introHtml, bookHtml]) => {
+                // Вставляем intro-section перед основным контентом
+                document.getElementById('book-content').innerHTML = introHtml + bookHtml;
+
+                // Инициализация аудио-плеера
+                const audio = document.getElementById('intro-audio');
+                const playBtn = document.getElementById('intro-play-btn');
+                const playerPill = document.querySelector('.player-pill');
+                const timeDisplay = document.getElementById('intro-time');
+                const readBtn = document.getElementById('intro-read-btn');
+                const introText = document.querySelector('.intro-text');
+
+                if (audio && playBtn && timeDisplay && playerPill) {
+                    function formatTime(seconds) {
+                        const mins = Math.floor(seconds / 60);
+                        const secs = Math.floor(seconds % 60);
+                        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                    }
+
+                    function updateTimeDisplay() {
+                        const current = formatTime(audio.currentTime);
+                        const duration = formatTime(audio.duration || 0);
+                        timeDisplay.textContent = `${current} / ${duration}`;
+                    }
+
+                    function togglePlayPause() {
+                        if (audio.paused) {
+                            audio.play();
+                            playBtn.classList.add('playing');
+                        } else {
+                            audio.pause();
+                            playBtn.classList.remove('playing');
+                        }
+                    }
+
+                    playerPill.addEventListener('click', togglePlayPause);
+
+                    audio.addEventListener('timeupdate', updateTimeDisplay);
+                    audio.addEventListener('loadedmetadata', updateTimeDisplay);
+                    audio.addEventListener('ended', () => {
+                        playBtn.classList.remove('playing');
+                    });
+                }
+
+                // Toggle текста
+                if (readBtn && introText) {
+                    readBtn.addEventListener('click', () => {
+                        introText.classList.toggle('visible');
+                        readBtn.textContent = introText.classList.contains('visible') ? 'Скрыть текст' : 'Читать текст';
+                    });
+                }
 
                 // Навешиваем обработчики на все selected элементы
                 const selectedElements = document.querySelectorAll('selected');

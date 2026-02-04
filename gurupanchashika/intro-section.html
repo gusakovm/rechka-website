@@ -1,0 +1,216 @@
+<style>
+    .intro-section {
+        margin-bottom: 20px;
+        padding: 24px 24px 12px 24px;
+        background: #f5f5f5;
+        border-radius: 8px;
+    }
+
+    .intro-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .intro-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        flex-shrink: 0;
+    }
+
+    .intro-header-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .intro-label {
+        font-size: 12px;
+        line-height: 15px;
+        color: #242424;
+    }
+
+    .intro-name {
+        font-size: 16px;
+        line-height: 16px;
+        margin: 0;
+        font-weight: bold;
+        color: #242424;
+    }
+
+    .custom-audio-player {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .player-pill {
+        display: flex;
+        align-items: center;
+        border: 2px solid #242424;
+        border-radius: 20px;
+        background: white;
+        height: 40px;
+        padding-right: 12px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+
+    .player-pill:hover {
+        background: #f5f5f5;
+    }
+
+    .play-button {
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 50%;
+        background: transparent;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        pointer-events: none;
+    }
+
+    .play-button::before {
+        content: '';
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 8px 0 8px 14px;
+        border-color: transparent transparent transparent #242424;
+        margin-left: 3px;
+        transition: all 0.2s ease;
+    }
+
+    .play-button.playing::before {
+        width: 3px;
+        height: 16px;
+        border: none;
+        background: #242424;
+        margin-left: -6px;
+        box-shadow: 6px 0 0 0 #242424;
+    }
+
+    .time-display {
+        font-family: 'Tenor Sans', sans-serif;
+        font-size: 16px;
+        color: #242424;
+        min-width: 110px;
+        text-align: center;
+    }
+
+    .read-text-btn {
+        font-family: 'Tenor Sans', sans-serif;
+        font-size: 16px;
+        color: #242424;
+        background: white;
+        border: 2px solid #242424;
+        border-radius: 20px;
+        padding: 0 16px;
+        height: 40px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+
+    .read-text-btn:hover {
+        background: #f5f5f5;
+    }
+
+    .intro-text {
+        font-size: 16px;
+        line-height: 24px;
+        color: #242424;
+        display: none;
+    }
+
+    .intro-text.visible {
+        display: block;
+    }
+
+    .intro-text p {
+        margin-bottom: 12px;
+    }
+
+    .intro-text p:last-child {
+        margin-bottom: 0;
+    }
+
+    @media (max-width: 768px) {
+        .intro-section {
+            margin-bottom: 20px;
+            padding: 16px 16px 8px 16px;
+        }
+
+        .intro-header {
+            gap: 10px;
+        }
+
+        .intro-avatar {
+            width: 36px;
+            height: 36px;
+        }
+
+        .intro-name {
+            font-size: 14px;
+            line-height: 14px;
+        }
+
+        .player-pill {
+            height: 36px;
+        }
+
+        .play-button {
+            width: 36px;
+            height: 36px;
+        }
+
+        .time-display {
+            font-size: 12px;
+            min-width: 80px;
+        }
+
+        .read-text-btn {
+            font-size: 12px;
+            height: 36px;
+        }
+    }
+</style>
+
+<div class="intro-section">
+    <div class="intro-header">
+        <img src="https://storage.yandexcloud.net/893264981267387356145745696564/p/mbabievtgovvixszyhitrtlmcsua.jpeg" alt="Павел Баранов" class="intro-avatar">
+        <div class="intro-header-text">
+            <div class="intro-label">Введение</div>
+            <h2 class="intro-name">Павла Баранова</h2>
+        </div>
+    </div>
+
+    <div class="custom-audio-player">
+        <div class="player-pill">
+            <button class="play-button" id="intro-play-btn" aria-label="Воспроизвести"></button>
+            <span class="time-display" id="intro-time">00:00 / 00:00</span>
+        </div>
+        <button class="read-text-btn" id="intro-read-btn">Читать текст</button>
+        <audio id="intro-audio" preload="metadata">
+            <source src="audio-mp3/intro.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <div class="intro-text">
+        <p>Здравствуйте, дорогие друзья! Я Павел Баранов, и далее вас ждут мои комментарии по поводу текста Гурупанчашика.</p>
+
+        <p>Что собой в целом представляет этот текст? Это инструкция к взаимодействию с реализованным мастером. Текст относится к коренным в буддийской традиции, а это значит — к одним из самых фундаментальных текстов. Примечательно, что сам текст представляет собой методичку — он не очень большой, и при этом имеет первостепенное значение.</p>
+
+        <p>Почему так? Потому что уже большое количество времени назад — сам текст был написан в первом веке до нашей эры Ашвагхошей, знаменитым просветителем, мастером буддийской традиции — уже тогда понимали, что феномен связи с реализованным мастером позволяет ученику достичь результата в практике медитации, достичь реализации медитативного состояния гораздо быстрее, чем если ученик будет медитировать самостоятельно. И в силу экономии времени этот текст оказался в числе коренных — если ученик все сделает правильно, то при установлении связи с реализованным мастером он получает результат от практики с экономией в десятки лет.</p>
+
+        <p>Итак, далее я буду пояснять вам отдельные части этого текста, которые мне кажутся важными, для того чтобы сам текст был для вас более понятен. Почему я считаю, что комментарии в данном случае важны? Потому что в силу давности написания этого текста в нем есть множество особенностей, которые современному человеку могут быть непонятны. Также буддийская традиция накладывает свой отпечаток, так как в тексте часто используются понятия, незнакомые человеку, не погруженному в буддийскую традицию. Поэтому некоторые из этих понятий я также буду пояснять.</p>
+    </div>
+</div>
+
