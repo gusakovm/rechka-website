@@ -395,6 +395,24 @@
             box-shadow: 6px 0 0 0 #242424;
         }
 
+        .modal-audio-player .play-button.loading::before {
+            display: none;
+        }
+
+        .modal-audio-player .play-button.loading::after {
+            content: '';
+            width: 16px;
+            height: 16px;
+            border: 2px solid #e0e0e0;
+            border-top-color: #242424;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         .modal-audio-player .time-display {
             font-family: 'Tenor Sans', sans-serif;
             font-size: 16px;
@@ -1174,6 +1192,7 @@
 
                 audio.addEventListener('ended', () => {
                     playBtn.classList.remove('playing');
+                    playBtn.classList.remove('loading');
 
                     // Автоматически запускаем следующий трек
                     const nextIndex = playerIndex + 1;
@@ -1182,6 +1201,20 @@
                         nextPlayer.audio.play();
                         nextPlayer.playBtn.classList.add('playing');
                     }
+                });
+
+                // Показываем спиннер только при буферизации во время воспроизведения
+                audio.addEventListener('waiting', () => {
+                    playBtn.classList.add('loading');
+                });
+
+                // Скрываем спиннер когда можно играть
+                audio.addEventListener('canplay', () => {
+                    playBtn.classList.remove('loading');
+                });
+
+                audio.addEventListener('playing', () => {
+                    playBtn.classList.remove('loading');
                 });
 
                 readBtn.addEventListener('click', () => {
@@ -1341,6 +1374,25 @@
                     audio.addEventListener('loadedmetadata', updateTimeDisplay);
                     audio.addEventListener('ended', () => {
                         playBtn.classList.remove('playing');
+                        playBtn.classList.remove('loading');
+                    });
+
+                    // Показываем спиннер при загрузке
+                    audio.addEventListener('loadstart', () => {
+                        playBtn.classList.add('loading');
+                    });
+
+                    audio.addEventListener('waiting', () => {
+                        playBtn.classList.add('loading');
+                    });
+
+                    // Скрываем спиннер когда можно играть
+                    audio.addEventListener('canplay', () => {
+                        playBtn.classList.remove('loading');
+                    });
+
+                    audio.addEventListener('playing', () => {
+                        playBtn.classList.remove('loading');
                     });
                 }
 

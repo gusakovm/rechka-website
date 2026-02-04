@@ -1,6 +1,7 @@
 
 payment/.DS_Store
 .DS_Store
+.playwright-mcp
 
 # Audio files
 gurupanchashika/audio-source/
