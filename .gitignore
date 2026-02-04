@@ -4,6 +4,5 @@ payment/.DS_Store
 
 # Audio files
 gurupanchashika/audio-source/
-gurupanchashika/audio-mp3/
 gurupanchashika/transcriptions/
 gurupanchashika/workflows/transcribe-audio.sh

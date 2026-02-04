@@ -216,6 +216,11 @@
             cursor: pointer;
         }
 
+        selected.viewed {
+            background: rgba(200, 200, 200, 0.4);
+            box-shadow: 3px 0px 0px 0px rgba(200, 200, 200, 0.4), -3px 0px 0px 0px rgba(200, 200, 200, 0.4);
+        }
+
         /* Модальное окно */
         .modal-overlay {
             position: fixed;
@@ -328,12 +333,106 @@
             line-height: 16px;
         }
 
-        .modal-comment {
+        .modal-audio-player {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 16px;
+            margin-bottom: 0;
+        }
+
+        .modal-audio-player + .modal-comment {
+            margin-bottom: 16px;
+        }
+
+        .modal-audio-player .player-pill {
+            display: flex;
+            align-items: center;
+            border: 2px solid #242424;
+            border-radius: 20px;
+            background: white;
+            height: 40px;
+            padding-right: 12px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .modal-audio-player .player-pill:hover {
+            background: #f5f5f5;
+        }
+
+        .modal-audio-player .play-button {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            pointer-events: none;
+        }
+
+        .modal-audio-player .play-button::before {
+            content: '';
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 8px 0 8px 14px;
+            border-color: transparent transparent transparent #242424;
+            margin-left: 3px;
+            transition: all 0.2s ease;
+        }
+
+        .modal-audio-player .play-button.playing::before {
+            width: 3px;
+            height: 16px;
+            border: none;
+            background: #242424;
+            margin-left: -6px;
+            box-shadow: 6px 0 0 0 #242424;
+        }
+
+        .modal-audio-player .time-display {
             font-family: 'Tenor Sans', sans-serif;
             font-size: 16px;
-            line-height: 24px;
+            color: #242424;
+            min-width: 110px;
+            text-align: center;
+        }
+
+        .modal-audio-player .read-text-btn {
+            font-family: 'Tenor Sans', sans-serif;
+            font-size: 16px;
+            color: #242424;
+            background: white;
+            border: 2px solid #242424;
+            border-radius: 20px;
+            padding: 0 16px;
+            height: 40px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .modal-audio-player .read-text-btn:hover {
+            background: #f5f5f5;
+        }
+
+        .modal-comment {
+            font-family: 'Tenor Sans', sans-serif;
+            font-size: 12px;
+            line-height: 16px;
             color: #242424;
             margin-bottom: 0;
+            margin-top: 0;
+            display: none;
+        }
+
+        .modal-comment.visible {
+            display: block;
+            margin-top: 12px;
         }
 
         .modal-close-btn {
@@ -468,6 +567,25 @@
 
             list {
                 margin-left: 24px;
+            }
+
+            .modal-audio-player .player-pill {
+                height: 36px;
+            }
+
+            .modal-audio-player .play-button {
+                width: 36px;
+                height: 36px;
+            }
+
+            .modal-audio-player .time-display {
+                font-size: 12px;
+                min-width: 90px;
+            }
+
+            .modal-audio-player .read-text-btn {
+                font-size: 12px;
+                height: 36px;
             }
         }
 
@@ -807,9 +925,6 @@
         <div class="modal-container">
             <button class="modal-close-top" id="modal-close-top"></button>
             <div class="modal">
-                <div class="modal-quote">
-                    <p class="modal-quote-text" id="modal-quote-text"></p>
-                </div>
                 <div class="modal-author">
                     <img class="modal-author-avatar" src="https://storage.yandexcloud.net/893264981267387356145745696564/p/mbabievtgovvixszyhitrtlmcsua.jpeg" alt="Павел Баранов">
                     <div class="modal-author-info">
@@ -945,27 +1060,163 @@
             return quoteBlock;
         }
 
-        function openModal(quotes, commentText) {
+        function openModal(quotes, audioItems) {
             const modal = document.querySelector('.modal');
             const modalAuthor = document.querySelector('.modal-author');
+            const modalComment = document.getElementById('modal-comment');
 
-            // Удаляем все существующие блоки modal-quote
+            // Удаляем все существующие блоки modal-quote, audio-player и динамические комментарии
             const existingQuotes = modal.querySelectorAll('.modal-quote');
             existingQuotes.forEach(quote => quote.remove());
+            const existingPlayers = modal.querySelectorAll('.modal-audio-player');
+            existingPlayers.forEach(player => player.remove());
+            // Удаляем все динамически созданные комментарии (кроме статического с id)
+            const existingComments = modal.querySelectorAll('.modal-comment:not(#modal-comment)');
+            existingComments.forEach(comment => comment.remove());
 
-            // Если quotes это массив, создаем отдельный блок modal-quote для каждой цитаты
+            // Создаем блоки цитат
             if (Array.isArray(quotes)) {
                 quotes.forEach((quote, index) => {
                     const quoteBlock = createQuoteBlock(quote, index === quotes.length - 1);
                     modal.insertBefore(quoteBlock, modalAuthor);
                 });
             } else {
-                // Если это одна цитата, создаем один блок modal-quote
                 const quoteBlock = createQuoteBlock(quotes, true);
                 modal.insertBefore(quoteBlock, modalAuthor);
             }
 
-            modalComment.textContent = commentText;
+            // Функция для создания одного аудиоплеера
+            function createAudioPlayer(audioFile, commentText, playerIndex, audioElements) {
+                const playerDiv = document.createElement('div');
+                playerDiv.className = 'modal-audio-player';
+                playerDiv.innerHTML = `
+                    <div class="player-pill">
+                        <button class="play-button" aria-label="Воспроизвести"></button>
+                        <span class="time-display">00:00 / 00:00</span>
+                    </div>
+                    <button class="read-text-btn">Читать текст</button>
+                    <audio preload="metadata">
+                        <source src="audio-mp3/${audioFile}" type="audio/mpeg">
+                    </audio>
+                `;
+
+                const commentDiv = document.createElement('div');
+                commentDiv.className = 'modal-comment';
+
+                // Разбиваем текст на абзацы (по двойным переносам строки)
+                const paragraphs = commentText.split('\n\n').filter(p => p.trim());
+                paragraphs.forEach(paragraph => {
+                    const p = document.createElement('p');
+                    p.textContent = paragraph.trim();
+                    p.style.marginBottom = '12px';
+                    p.style.marginTop = '0';
+                    commentDiv.appendChild(p);
+                });
+
+                // Убираем margin у последнего абзаца
+                if (commentDiv.lastChild) {
+                    commentDiv.lastChild.style.marginBottom = '0';
+                }
+
+                modal.insertBefore(playerDiv, modalComment);
+                modal.insertBefore(commentDiv, modalComment);
+
+                const audio = playerDiv.querySelector('audio');
+                const playBtn = playerDiv.querySelector('.play-button');
+                const playerPill = playerDiv.querySelector('.player-pill');
+                const timeDisplay = playerDiv.querySelector('.time-display');
+                const readBtn = playerDiv.querySelector('.read-text-btn');
+
+                function formatTime(seconds) {
+                    const mins = Math.floor(seconds / 60);
+                    const secs = Math.floor(seconds % 60);
+                    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                }
+
+                playerPill.addEventListener('click', () => {
+                    if (audio.paused) {
+                        // Останавливаем все остальные плееры
+                        audioElements.forEach((el, idx) => {
+                            if (idx !== playerIndex && !el.audio.paused) {
+                                el.audio.pause();
+                                el.playBtn.classList.remove('playing');
+                            }
+                        });
+                        audio.play();
+                        playBtn.classList.add('playing');
+                    } else {
+                        audio.pause();
+                        playBtn.classList.remove('playing');
+                    }
+                });
+
+                audio.addEventListener('timeupdate', () => {
+                    const current = formatTime(audio.currentTime);
+                    const duration = formatTime(audio.duration || 0);
+                    timeDisplay.textContent = `${current} / ${duration}`;
+                });
+
+                audio.addEventListener('loadedmetadata', () => {
+                    const current = formatTime(audio.currentTime);
+                    const duration = formatTime(audio.duration || 0);
+                    timeDisplay.textContent = `${current} / ${duration}`;
+                });
+
+                audio.addEventListener('ended', () => {
+                    playBtn.classList.remove('playing');
+
+                    // Автоматически запускаем следующий трек
+                    const nextIndex = playerIndex + 1;
+                    if (nextIndex < audioElements.length) {
+                        const nextPlayer = audioElements[nextIndex];
+                        nextPlayer.audio.play();
+                        nextPlayer.playBtn.classList.add('playing');
+                    }
+                });
+
+                readBtn.addEventListener('click', () => {
+                    const isCurrentlyVisible = commentDiv.classList.contains('visible');
+
+                    // Закрываем все другие комментарии в модальном окне
+                    const allComments = modal.querySelectorAll('.modal-comment');
+                    const allReadBtns = modal.querySelectorAll('.read-text-btn');
+
+                    allComments.forEach(comment => {
+                        if (comment !== commentDiv) {
+                            comment.classList.remove('visible');
+                        }
+                    });
+
+                    allReadBtns.forEach(btn => {
+                        if (btn !== readBtn) {
+                            btn.textContent = 'Читать текст';
+                        }
+                    });
+
+                    // Переключаем текущий комментарий
+                    commentDiv.classList.toggle('visible');
+                    readBtn.textContent = commentDiv.classList.contains('visible') ? 'Скрыть текст' : 'Читать текст';
+                    setTimeout(checkModalHeight, 0);
+                });
+
+                return { audio, playBtn, playerPill, timeDisplay, readBtn, commentDiv };
+            }
+
+            // Создаем аудиоплееры если есть аудио
+            if (audioItems && audioItems.length > 0) {
+                const audioElements = [];
+                audioItems.forEach((item, index) => {
+                    if (item.audio) {
+                        const elements = createAudioPlayer(item.audio, item.text, index, audioElements);
+                        audioElements.push(elements);
+                    }
+                });
+            } else {
+                // Если нет аудио, показываем комментарий сразу (старая логика для обратной совместимости)
+                modalComment.classList.add('visible');
+                modalComment.textContent = '(комментарий отсутствует)';
+            }
+
             modalOverlay.classList.add('active');
             document.body.classList.add('modal-open');
 
@@ -978,6 +1229,22 @@
         }
 
         function closeModal() {
+            // Останавливаем все аудио плееры
+            const modal = document.querySelector('.modal');
+            const allAudios = modal.querySelectorAll('audio');
+            const allPlayBtns = modal.querySelectorAll('.play-button');
+
+            allAudios.forEach(audio => {
+                if (!audio.paused) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                }
+            });
+
+            allPlayBtns.forEach(btn => {
+                btn.classList.remove('playing');
+            });
+
             modalOverlay.classList.remove('active');
             document.body.classList.remove('modal-open');
             modalCloseTop.classList.remove('visible');
@@ -1067,7 +1334,7 @@
                         const chainId = element.getAttribute('chain-id');
 
                         let quoteText = '';
-                        let commentText = '';
+                        const audioItems = [];
 
                         if (chainId) {
                             // Если есть chain-id, собираем все элементы с тем же chain-id
@@ -1076,19 +1343,65 @@
 
                             chainElements.forEach(el => {
                                 quotes.push(el.textContent.trim());
-                                // Берем комментарий из первого элемента цепочки
-                                if (!commentText && el.getAttribute('comment')) {
-                                    commentText = el.getAttribute('comment');
+                                // Собираем все аудио и комментарии из элементов цепочки
+                                const audio = el.getAttribute('audio');
+                                const comment = el.getAttribute('comment');
+                                if (audio || comment) {
+                                    // Проверяем, есть ли несколько аудио файлов (разделенных "|")
+                                    if (audio && audio.includes('|')) {
+                                        const audioFiles = audio.split('|');
+                                        const comments = comment ? comment.split('|||') : [];
+                                        audioFiles.forEach((audioFile, index) => {
+                                            audioItems.push({
+                                                audio: audioFile.trim() || null,
+                                                text: (comments[index] || '(комментарий отсутствует)').trim()
+                                            });
+                                        });
+                                    } else {
+                                        audioItems.push({
+                                            audio: audio || null,
+                                            text: comment || '(комментарий отсутствует)'
+                                        });
+                                    }
                                 }
                             });
 
-                            // Передаем массив цитат
-                            openModal(quotes, commentText);
+                            // Передаем массив цитат и аудио-объектов
+                            openModal(quotes, audioItems);
+
+                            // Помечаем все элементы цепочки как просмотренные
+                            chainElements.forEach(el => {
+                                el.classList.add('viewed');
+                            });
                         } else {
                             // Если нет chain-id, берем текст одного элемента
                             quoteText = element.textContent.trim();
-                            commentText = element.getAttribute('comment') || '(комментарий отсутствует)';
-                            openModal(quoteText, commentText);
+                            const audio = element.getAttribute('audio');
+                            const comment = element.getAttribute('comment');
+
+                            if (audio || comment) {
+                                // Проверяем, есть ли несколько аудио файлов (разделенных "|")
+                                if (audio && audio.includes('|')) {
+                                    const audioFiles = audio.split('|');
+                                    const comments = comment ? comment.split('|||') : [];
+                                    audioFiles.forEach((audioFile, index) => {
+                                        audioItems.push({
+                                            audio: audioFile.trim() || null,
+                                            text: (comments[index] || '(комментарий отсутствует)').trim()
+                                        });
+                                    });
+                                } else {
+                                    audioItems.push({
+                                        audio: audio || null,
+                                        text: comment || '(комментарий отсутствует)'
+                                    });
+                                }
+                            }
+
+                            openModal(quoteText, audioItems);
+
+                            // Помечаем элемент как просмотренный
+                            element.classList.add('viewed');
                         }
                     });
                 });
