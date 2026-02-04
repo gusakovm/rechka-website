@@ -1135,7 +1135,17 @@
 
                 playerPill.addEventListener('click', () => {
                     if (audio.paused) {
-                        // Останавливаем все остальные плееры
+                        // Останавливаем intro-аудио, если оно играет
+                        const introAudio = document.getElementById('intro-audio');
+                        const introPlayBtn = document.getElementById('intro-play-btn');
+                        if (introAudio && !introAudio.paused) {
+                            introAudio.pause();
+                            if (introPlayBtn) {
+                                introPlayBtn.classList.remove('playing');
+                            }
+                        }
+
+                        // Останавливаем все остальные плееры в модальном окне
                         audioElements.forEach((el, idx) => {
                             if (idx !== playerIndex && !el.audio.paused) {
                                 el.audio.pause();
@@ -1302,6 +1312,21 @@
 
                     function togglePlayPause() {
                         if (audio.paused) {
+                            // Останавливаем все аудио в модальных окнах, если они играют
+                            const modal = document.querySelector('.modal');
+                            if (modal) {
+                                const modalAudios = modal.querySelectorAll('audio');
+                                const modalPlayBtns = modal.querySelectorAll('.play-button');
+                                modalAudios.forEach(modalAudio => {
+                                    if (!modalAudio.paused) {
+                                        modalAudio.pause();
+                                    }
+                                });
+                                modalPlayBtns.forEach(btn => {
+                                    btn.classList.remove('playing');
+                                });
+                            }
+
                             audio.play();
                             playBtn.classList.add('playing');
                         } else {
