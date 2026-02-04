@@ -1377,11 +1377,7 @@
                         playBtn.classList.remove('loading');
                     });
 
-                    // Показываем спиннер при загрузке
-                    audio.addEventListener('loadstart', () => {
-                        playBtn.classList.add('loading');
-                    });
-
+                    // Показываем спиннер только при буферизации во время воспроизведения
                     audio.addEventListener('waiting', () => {
                         playBtn.classList.add('loading');
                     });
